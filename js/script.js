@@ -24,7 +24,9 @@ async function loadWeather(e) {
 
 function getWeather(data) {
     // Обработка выводимых данных
-    const location = data.name;
+    // const location = data.name;
+    // console.log('mySityGeolocation', mySityGeolocation);
+    // const location = mySityGeolocation;
     const temp= Math.round(data.main.temp);
     const fealsLike = Math.round(data.main.feels_like);
     const weatherStatus = data.weather[0].main;
@@ -49,4 +51,30 @@ function getWeather(data) {
 
 if (weatherBlock) {
     loadWeather();
+}
+
+// navigator.geolocation.getCurrentPosition(
+//     function(position) {
+// 	    console.log('Последний раз вас засекали здесь: ' +
+// 		    position.coords.latitude + ", " + position.coords.longitude);
+//         console.log(position)    
+// 	}
+// );
+
+ymaps.ready(init);
+
+function init() {
+    var geolocation = ymaps.geolocation;
+    geolocation.get({
+        provider: 'yandex',
+        mapStateAutoApply: true
+    }).then(function (result) {
+            const mySityGeolocation = result.geoObjects.get(0).properties.get(
+                'metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName'
+                )
+            console.log(mySityGeolocation);
+            return mySityGeolocation;
+    }).then(function() {
+        console.log(mySityGeolocation)
+    })
 }

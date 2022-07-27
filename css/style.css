@@ -41,6 +41,7 @@ body{
 /*--------------------*/
 
 .wrapper {
+   padding: 10px;
    height: 100%;
    display: flex;
    align-items: center;

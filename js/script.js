@@ -9,13 +9,14 @@ async function loadWeather(e) {
             <img src="/img/loading.gif" alt="Loading...">
         </div>`;
     const [lat, lon] = e.coord;
-    console.log('lat', Math.round(lat * 100) / 100, 'lon', Math.round(lon * 1000) / 1000);    
+    // console.log('lat', Math.round(lat * 100) / 100, 'lon', Math.round(lon * 1000) / 1000);    
     const server = `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=3271c2ed7c22a57273a4549fd585d36f`;
     const response = await fetch(server, {
         method: 'GET',
     });
     const responseResult = await response.json();
-    console.log(responseResult)
+    responseResult.nameRu = e.mySityGeolocation;
+    // console.log(responseResult)
     if (response.ok) {
         getWeather(responseResult);
     } else {
@@ -25,7 +26,7 @@ async function loadWeather(e) {
 
 function getWeather(data) {
     // Обработка выводимых данных
-    const location = data.name;
+    const location = data.nameRu;
     const temp= Math.round(data.main.temp);
     const fealsLike = Math.round(data.main.feels_like);
     const weatherStatus = data.weather[0].main;
@@ -48,10 +49,6 @@ function getWeather(data) {
     weatherBlock.innerHTML = template;
 }
 
-// if (weatherBlock) {
-//     loadWeather();
-// }
-
 // navigator.geolocation.getCurrentPosition(
 //     function(position) {
 // 	      console.log('position', position)    
@@ -63,7 +60,7 @@ ymaps.ready(init);
 function init() {
     let geolocation = ymaps.geolocation;
     geolocation.get({
-        provider: 'browser',
+        provider: 'yandex',
         mapStateAutoApply: true
     }).then(function (result) {
         const myGeolocation = {
@@ -74,7 +71,6 @@ function init() {
         };
         return (myGeolocation)
     }).then(myGeolocation => {
-        // console.log('myGeolocation', myGeolocation);
         if (weatherBlock) {
             loadWeather(myGeolocation);
         }

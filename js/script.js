@@ -63,7 +63,7 @@ ymaps.ready(init);
 function init() {
     let geolocation = ymaps.geolocation;
     geolocation.get({
-        provider: 'yandex',
+        provider: 'browser',
         mapStateAutoApply: true
     }).then(function (result) {
         const myGeolocation = {

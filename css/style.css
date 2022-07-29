@@ -92,3 +92,8 @@ body{
    content: "℃";
 }
 
+.weather__error {
+    padding: 10px;
+    background-color: red;
+    color: #fff;
+}

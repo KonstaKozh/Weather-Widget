@@ -55,7 +55,7 @@ function getWeather(data) {
 // 	}
 // );
 
-ymaps.ready(init);
+// ymaps.ready(init);
 
 function init() {
     let geolocation = ymaps.geolocation;
@@ -75,6 +75,21 @@ function init() {
             loadWeather(myGeolocation);
         }
     }).catch(error => console.log(error.message))
+}
+
+function error() {
+    weatherBlock.innerHTML = `
+        <div class="weather__error">
+            <span>Невозможно получить ваше местоположение, необходим доступ к геоданным</span>
+        </div>`;
+    // alert('Невозможно получить ваше местоположение, необходим доступ к геоданным');
+}
+
+if (!navigator.geolocation) {
+    alert('Geolocation не поддерживается вашим браузером');
+} else {
+    const success = () => ymaps.ready(init);
+    navigator.geolocation.getCurrentPosition(success, error);
 }
 
 

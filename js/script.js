@@ -15,7 +15,7 @@ async function loadWeather(e) {
         method: 'GET',
     });
     const responseResult = await response.json();
-    responseResult.nameRu = e.mySityGeolocation;
+    responseResult.nameRu = e.myCityGeolocation;
     // console.log(responseResult)
     if (response.ok) {
         getWeather(responseResult);
@@ -28,7 +28,7 @@ function getWeather(data) {
     // Обработка выводимых данных
     const location = data.nameRu;
     const temp= Math.round(data.main.temp);
-    const fealsLike = Math.round(data.main.feels_like);
+    const feelsLike = Math.round(data.main.feels_like);
     const weatherStatus = data.weather[0].main;
     const weatherIcon = data.weather[0].icon;
     
@@ -44,7 +44,7 @@ function getWeather(data) {
             </div>
         </div>
         <div class="weather__temp">${temp}</div>
-        <div class="weather__feels-like">Feels-like: ${fealsLike}</div>`; 
+        <div class="weather__feels-like">Feels-like: ${feelsLike}</div>`;
 
     weatherBlock.innerHTML = template;
 }
@@ -64,7 +64,7 @@ function init() {
         mapStateAutoApply: true
     }).then(function (result) {
         const myGeolocation = {
-            mySityGeolocation: result.geoObjects.get(0).properties.get(
+            myCityGeolocation: result.geoObjects.get(0).properties.get(
                 'metaDataProperty.GeocoderMetaData.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName'
                 ),
             coord: result.geoObjects.position

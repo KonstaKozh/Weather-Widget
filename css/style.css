@@ -42,15 +42,12 @@ body{
 
 .wrapper {
    padding: 10px;
-   height: 100%;
-   display: flex;
-   align-items: center;
 }
 .weather {
    background-color: #7a956b;
    border-radius: 10px;
    padding: 20px;
-   min-width: 450px;
+   max-width: 450px;
    margin: 0 auto;
    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }

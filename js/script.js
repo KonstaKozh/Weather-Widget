@@ -9,14 +9,14 @@ async function loadWeather(e) {
             <img src="/img/loading.gif" alt="Loading...">
         </div>`;
     const [lat, lon] = e.coord;
-    // console.log('lat', Math.round(lat * 100) / 100, 'lon', Math.round(lon * 1000) / 1000);    
     const server = `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${lon}&appid=3271c2ed7c22a57273a4549fd585d36f`;
     const response = await fetch(server, {
         method: 'GET',
     });
     const responseResult = await response.json();
-    responseResult.nameRu = e.myCityGeolocation;
-    // console.log(responseResult)
+    if (e.myCityGeolocation) {
+        responseResult.name = e.myCityGeolocation;
+    }
     if (response.ok) {
         getWeather(responseResult);
     } else {
@@ -26,14 +26,14 @@ async function loadWeather(e) {
 
 function getWeather(data) {
     // Обработка выводимых данных
-    const location = data.nameRu;
+    const location = data.name;
     const temp= Math.round(data.main.temp);
     const feelsLike = Math.round(data.main.feels_like);
     const weatherStatus = data.weather[0].main;
     const weatherIcon = data.weather[0].icon;
     
     // HTML шаблон
-    const template = `
+    weatherBlock.innerHTML = `
         <div class="weather__header">
             <div class="weather__main">
                 <div class="weather__city">${location}</div>
@@ -45,17 +45,7 @@ function getWeather(data) {
         </div>
         <div class="weather__temp">${temp}</div>
         <div class="weather__feels-like">Feels-like: ${feelsLike}</div>`;
-
-    weatherBlock.innerHTML = template;
 }
-
-// navigator.geolocation.getCurrentPosition(
-//     function(position) {
-// 	      console.log('position', position)    
-// 	}
-// );
-
-// ymaps.ready(init);
 
 function init() {
     let geolocation = ymaps.geolocation;
@@ -82,7 +72,6 @@ function error() {
         <div class="weather__error">
             <span>Невозможно получить ваше местоположение, необходим доступ к геоданным</span>
         </div>`;
-    // alert('Невозможно получить ваше местоположение, необходим доступ к геоданным');
 }
 
 if (!navigator.geolocation) {
